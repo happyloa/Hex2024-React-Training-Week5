@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import "../src/assets/style.css";
 
 import { currency } from "../src/utils/filter";
+import Pagination from "./component/Pagination";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -148,8 +149,7 @@ function App() {
     getProduct(id);
   };
 
-  const handleClick = (event, page) => {
-    event.preventDefault();
+  const changePage = (page) => {
     getProducts(page);
   };
 
@@ -176,8 +176,7 @@ function App() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <img className="w-100" src={product.imageUrl} />
@@ -196,8 +195,7 @@ function App() {
                   aria-label="Decrease quantity"
                   onClick={() =>
                     setCartQuantity((pre) => (pre === 1 ? pre : pre - 1))
-                  }
-                >
+                  }>
                   <i className="fa-solid fa-minus"></i>
                 </button>
                 <input
@@ -213,8 +211,7 @@ function App() {
                   type="button"
                   id="button-addon2"
                   aria-label="Decrease quantity"
-                  onClick={() => setCartQuantity((pre) => pre + 1)}
-                >
+                  onClick={() => setCartQuantity((pre) => pre + 1)}>
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </div>
@@ -223,8 +220,7 @@ function App() {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => addCart(product.id, cartQuantity)}
-              >
+                onClick={() => addCart(product.id, cartQuantity)}>
                 加入購物車
               </button>
             </div>
@@ -267,8 +263,7 @@ function App() {
                   <button
                     className="btn btn-outline-secondary"
                     onClick={() => openModal(product.id)}
-                    disabled={loadingProductId === product.id}
-                  >
+                    disabled={loadingProductId === product.id}>
                     {loadingProductId === product.id ? (
                       <ReactLoading
                         type="spin"
@@ -284,8 +279,7 @@ function App() {
                     type="button"
                     className="btn btn-outline-danger"
                     onClick={() => addCart(product.id, 1)}
-                    disabled={loadingCartId === product.id}
-                  >
+                    disabled={loadingCartId === product.id}>
                     {loadingCartId === product.id ? (
                       <ReactLoading
                         type="spin"
@@ -305,55 +299,14 @@ function App() {
       </table>
 
       {/* 分頁 */}
-      <nav aria-label="Page navigation example">
-        <ul className="pagination">
-          <li className="page-item">
-            <a
-              href="/"
-              aria-label="Previous"
-              className={`page-link ${pagination.has_pre ? "" : "disabled"}`}
-              onClick={(event) =>
-                handleClick(event, pagination.current_page - 1)
-              }
-            >
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          {[...new Array(pagination.total_pages)].map((_, i) => (
-            <li className="page-item" key={`${i}_page`}>
-              <a
-                className={`page-link ${
-                  i + 1 === pagination.current_page && "active"
-                }`}
-                href="/"
-                onClick={(event) => handleClick(event, i + 1)}
-              >
-                {i + 1}
-              </a>
-            </li>
-          ))}
-          <li className="page-item">
-            <a
-              className={`page-link ${pagination.has_next ? "" : "disabled"}`}
-              onClick={(event) =>
-                handleClick(event, pagination.current_page + 1)
-              }
-              href="/"
-              aria-label="Next"
-            >
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <Pagination pagination={pagination} changePage={changePage} />
 
       {/* 購物車列表 */}
       <div className="text-end">
         <button
           className="btn btn-outline-danger"
           type="button"
-          onClick={deleteCartAll}
-        >
+          onClick={deleteCartAll}>
           清空購物車
         </button>
       </div>
@@ -374,14 +327,11 @@ function App() {
                   <button
                     type="button"
                     className="btn btn-outline-danger btn-sm"
-                    onClick={() => deleteCart(item.id)}
-                  >
+                    onClick={() => deleteCart(item.id)}>
                     <i className="bi bi-x" /> 刪除
                   </button>
                 </td>
-                <td>
-                  {item.product.title}
-                </td>
+                <td>{item.product.title}</td>
                 <td>
                   <div className="input-group input-group-sm">
                     <input
