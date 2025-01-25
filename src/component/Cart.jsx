@@ -6,21 +6,35 @@ import { currency } from "../utils/filter";
 
 const Cart = forwardRef(
   ({ cart, deleteCart, deleteCartAll, updateCart }, ref) => {
-    const offcanvasRef = useRef(null);
+    const offcanvasInstanceRef = useRef(null); // 存放 Bootstrap Offcanvas 實例
+    const offcanvasElementRef = useRef(null); // 存放 DOM 元素參考
 
     // 初始化 Offcanvas
     useImperativeHandle(ref, () => ({
       show: () => {
-        if (offcanvasRef.current) {
-          offcanvasRef.current.show();
+        if (offcanvasInstanceRef.current) {
+          offcanvasInstanceRef.current.show();
+        }
+      },
+      hide: () => {
+        if (offcanvasInstanceRef.current) {
+          offcanvasInstanceRef.current.hide();
         }
       },
     }));
 
     useEffect(() => {
-      offcanvasRef.current = new bootstrap.Offcanvas("#cartOffcanvas", {
-        backdrop: true,
-      });
+      if (offcanvasElementRef.current) {
+        offcanvasInstanceRef.current = new bootstrap.Offcanvas(
+          offcanvasElementRef.current,
+          { backdrop: true }
+        );
+      }
+      return () => {
+        if (offcanvasInstanceRef.current) {
+          offcanvasInstanceRef.current.dispose();
+        }
+      };
     }, []);
 
     return (
@@ -28,7 +42,8 @@ const Cart = forwardRef(
         className="offcanvas offcanvas-end text-nowrap"
         tabIndex="-1"
         id="cartOffcanvas"
-        aria-labelledby="cartOffcanvasLabel">
+        aria-labelledby="cartOffcanvasLabel"
+        ref={offcanvasElementRef}>
         <div className="offcanvas-header bg-light">
           <h5 className="offcanvas-title" id="cartOffcanvasLabel">
             購物車
@@ -36,8 +51,8 @@ const Cart = forwardRef(
           <button
             type="button"
             className="btn-close"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"></button>
+            aria-label="Close"
+            onClick={() => offcanvasInstanceRef.current?.hide()}></button>
         </div>
         <div className="offcanvas-body">
           {cart?.carts?.length > 0 ? (
