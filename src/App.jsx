@@ -154,11 +154,11 @@ function App() {
   };
 
   useEffect(() => {
+    // 初始化產品和購物車資料
     getProducts();
     getCart();
-  }, []);
 
-  useEffect(() => {
+    // 初始化 Bootstrap Modal
     productModalRef.current = new bootstrap.Modal("#productModal", {
       keyboard: false,
     });
