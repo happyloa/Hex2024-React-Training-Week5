@@ -4,11 +4,15 @@ import PropTypes from "prop-types";
 const ProductDetailModal = forwardRef(
   ({ product, cartQuantity, setCartQuantity, addCart }, ref) => {
     return (
-      <div className="modal" id="productModal" aria-hidden="true" ref={ref}>
-        <div className="modal-dialog">
+      <div
+        className="modal fade"
+        id="productModal"
+        aria-hidden="true"
+        ref={ref}>
+        <div className="modal-dialog modal-lg">
           <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">產品名稱：{product.title}</h5>
+            <div className="modal-header bg-primary text-white">
+              <h5 className="modal-title fw-bold">產品名稱：{product.title}</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -16,21 +20,38 @@ const ProductDetailModal = forwardRef(
                 aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <img
-                className="w-100"
-                src={product.imageUrl}
-                alt={product.title}
-              />
-              <p className="mt-3">產品內容：{product.content}</p>
-              <p>產品描述：{product.description}</p>
-              <p>
-                價錢：
-                <del>原價 ${product.origin_price}</del>，特價：${product.price}
-              </p>
-              <div className="d-flex align-items-center">
-                <label style={{ width: "150px" }}>購買數量：</label>
+              {/* 圖片區塊 */}
+              <div className="text-center mb-4">
+                <img
+                  className="img-fluid rounded"
+                  src={product.imageUrl}
+                  alt={product.title}
+                />
+              </div>
+              {/* 產品描述 */}
+              <div className="mb-3">
+                <p className="fw-bold text-muted">產品內容：</p>
+                <p>{product.content}</p>
+              </div>
+              <div className="mb-3">
+                <p className="fw-bold text-muted">產品描述：</p>
+                <p>{product.description}</p>
+              </div>
+              {/* 價格區 */}
+              <div className="mb-4">
+                <p>
+                  <span className="text-muted">原價：</span>
+                  <del className="text-danger">${product.origin_price}</del>
+                </p>
+                <p className="fs-5 fw-bold text-success">
+                  特價：${product.price}
+                </p>
+              </div>
+              {/* 購買數量 */}
+              <div className="d-flex align-items-center gap-2">
+                <label className="fw-bold">購買數量：</label>
                 <button
-                  className="btn btn-danger"
+                  className="btn btn-outline-danger"
                   type="button"
                   aria-label="Decrease quantity"
                   onClick={() =>
@@ -39,7 +60,7 @@ const ProductDetailModal = forwardRef(
                   <i className="fa-solid fa-minus"></i>
                 </button>
                 <input
-                  className="form-control"
+                  className="form-control w-auto text-center"
                   type="number"
                   value={cartQuantity}
                   min="1"
@@ -47,7 +68,7 @@ const ProductDetailModal = forwardRef(
                   onChange={(e) => setCartQuantity(Number(e.target.value))}
                 />
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-outline-primary"
                   type="button"
                   aria-label="Increase quantity"
                   onClick={() => setCartQuantity((prev) => prev + 1)}>
@@ -55,7 +76,13 @@ const ProductDetailModal = forwardRef(
                 </button>
               </div>
             </div>
-            <div className="modal-footer">
+            <div className="modal-footer d-flex justify-content-between">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal">
+                關閉
+              </button>
               <button
                 type="button"
                 className="btn btn-primary"

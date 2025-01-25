@@ -2,46 +2,54 @@ import PropTypes from "prop-types";
 
 function PlaceOrderForm({ handleSubmit, onSubmit, register, errors }) {
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="col-md-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="col-md-8 bg-light p-4 rounded shadow-sm">
+      <h4 className="text-center mb-4">填寫訂單資訊</h4>
+
       <div className="mb-3">
-        <label htmlFor="name" className="form-label">
+        <label htmlFor="name" className="form-label fw-bold">
           收件人姓名
         </label>
         <input
           id="name"
           type="text"
-          className="form-control"
+          className={`form-control ${errors.name ? "is-invalid" : ""}`}
           placeholder="請輸入姓名"
           {...register("name", { required: "請輸入收件人姓名。" })}
         />
-        {errors.name && <p className="text-danger">{errors.name.message}</p>}
+        {errors.name && (
+          <div className="invalid-feedback">{errors.name.message}</div>
+        )}
       </div>
 
       <div className="mb-3">
-        <label htmlFor="email" className="form-label">
+        <label htmlFor="email" className="form-label fw-bold">
           Email
         </label>
         <input
           id="email"
           type="email"
-          className="form-control"
+          className={`form-control ${errors.email ? "is-invalid" : ""}`}
           placeholder="請輸入 Email"
           {...register("email", {
             required: "請輸入 Email。",
             pattern: { value: /^\S+@\S+$/i, message: "Email 格式不正確。" },
           })}
         />
-        {errors.email && <p className="text-danger">{errors.email.message}</p>}
+        {errors.email && (
+          <div className="invalid-feedback">{errors.email.message}</div>
+        )}
       </div>
 
       <div className="mb-3">
-        <label htmlFor="tel" className="form-label">
+        <label htmlFor="tel" className="form-label fw-bold">
           收件人電話
         </label>
         <input
           id="tel"
           type="tel"
-          className="form-control"
+          className={`form-control ${errors.tel ? "is-invalid" : ""}`}
           placeholder="請輸入電話"
           {...register("tel", {
             required: "請輸入收件人電話。",
@@ -55,40 +63,42 @@ function PlaceOrderForm({ handleSubmit, onSubmit, register, errors }) {
             },
           })}
         />
-        {errors.tel && <p className="text-danger">{errors.tel.message}</p>}
+        {errors.tel && (
+          <div className="invalid-feedback">{errors.tel.message}</div>
+        )}
       </div>
 
       <div className="mb-3">
-        <label htmlFor="address" className="form-label">
+        <label htmlFor="address" className="form-label fw-bold">
           收件人地址
         </label>
         <input
           id="address"
           type="text"
-          className="form-control"
+          className={`form-control ${errors.address ? "is-invalid" : ""}`}
           placeholder="請輸入地址"
           {...register("address", { required: "請輸入收件人地址。" })}
         />
         {errors.address && (
-          <p className="text-danger">{errors.address.message}</p>
+          <div className="invalid-feedback">{errors.address.message}</div>
         )}
       </div>
 
       <div className="mb-3">
-        <label htmlFor="message" className="form-label">
+        <label htmlFor="message" className="form-label fw-bold">
           留言
         </label>
         <textarea
           id="message"
           className="form-control"
-          placeholder="留言"
+          placeholder="如果有特殊需求，可以在這裡填寫"
           rows="3"
           {...register("message")}
         />
       </div>
 
-      <div className="text-end">
-        <button type="submit" className="btn btn-danger">
+      <div className="text-center">
+        <button type="submit" className="btn btn-primary w-50">
           送出訂單
         </button>
       </div>

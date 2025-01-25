@@ -29,7 +29,7 @@ const Cart = forwardRef(
         tabIndex="-1"
         id="cartOffcanvas"
         aria-labelledby="cartOffcanvasLabel">
-        <div className="offcanvas-header">
+        <div className="offcanvas-header bg-light">
           <h5 className="offcanvas-title" id="cartOffcanvasLabel">
             購物車
           </h5>
@@ -42,13 +42,13 @@ const Cart = forwardRef(
         <div className="offcanvas-body">
           {cart?.carts?.length > 0 ? (
             <>
-              <table className="table align-middle">
-                <thead>
+              <table className="table table-hover align-middle">
+                <thead className="table-secondary">
                   <tr>
                     <th></th>
                     <th>品名</th>
                     <th>數量/單位</th>
-                    <th>單價</th>
+                    <th className="text-end">單價</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -57,7 +57,7 @@ const Cart = forwardRef(
                       <td>
                         <button
                           type="button"
-                          className="btn btn-outline-danger btn-sm"
+                          className="btn btn-sm btn-outline-danger"
                           onClick={() => deleteCart(item.id)}>
                           <i className="bi bi-x" /> 刪除
                         </button>
@@ -75,9 +75,9 @@ const Cart = forwardRef(
                               updateCart(item.id, Number(e.target.value))
                             }
                           />
-                          <div className="input-group-text">
-                            /{item.product.unit}
-                          </div>
+                          <span className="input-group-text">
+                            {item.product.unit}
+                          </span>
                         </div>
                       </td>
                       <td className="text-end">
@@ -90,7 +90,7 @@ const Cart = forwardRef(
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr>
+                  <tr className="table-active">
                     <td colSpan="3" className="text-end">
                       總計
                     </td>
@@ -108,7 +108,7 @@ const Cart = forwardRef(
                   ) : null}
                 </tfoot>
               </table>
-              <div className="text-end">
+              <div className="text-end mt-3">
                 <button
                   className="btn btn-outline-danger"
                   type="button"
@@ -118,7 +118,9 @@ const Cart = forwardRef(
               </div>
             </>
           ) : (
-            <p>您的購物車是空的。</p>
+            <div className="text-center mt-5">
+              <p className="text-muted">您的購物車是空的。</p>
+            </div>
           )}
         </div>
       </div>
@@ -130,18 +132,23 @@ const Cart = forwardRef(
 Cart.displayName = "Cart";
 
 Cart.propTypes = {
-  cart: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      product: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        unit: PropTypes.string.isRequired,
-      }).isRequired,
-      qty: PropTypes.number.isRequired,
-      total: PropTypes.number.isRequired,
-      final_total: PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  cart: PropTypes.shape({
+    carts: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+          .isRequired,
+        product: PropTypes.shape({
+          title: PropTypes.string.isRequired,
+          unit: PropTypes.string.isRequired,
+        }).isRequired,
+        qty: PropTypes.number.isRequired,
+        total: PropTypes.number.isRequired,
+        final_total: PropTypes.number.isRequired,
+      })
+    ),
+    total: PropTypes.number,
+    final_total: PropTypes.number,
+  }),
   deleteCart: PropTypes.func.isRequired,
   deleteCartAll: PropTypes.func.isRequired,
   updateCart: PropTypes.func.isRequired,
