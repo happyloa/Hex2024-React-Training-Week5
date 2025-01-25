@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import ReactLoading from "react-loading";
 import { currency } from "../utils/filter";
