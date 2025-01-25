@@ -210,8 +210,8 @@ function App() {
       <button
         className="btn btn-primary rounded-circle position-fixed shadow"
         style={{
-          bottom: "50px",
-          right: "100px",
+          bottom: "40px",
+          right: "40px",
           width: "60px",
           height: "60px",
         }}
