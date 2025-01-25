@@ -65,7 +65,8 @@ function App() {
     try {
       const url = `${API_BASE}/api/${API_PATH}/cart`;
       const response = await axios.get(url);
-      setCart(response.data.data);
+      const data = response.data.data; // 確認回傳資料是否為物件
+      setCart(data);
     } catch (error) {
       console.log(error.response.data);
     }
