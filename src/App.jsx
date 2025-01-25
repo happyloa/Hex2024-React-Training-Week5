@@ -173,7 +173,7 @@ function App() {
   }, []);
 
   return (
-    <div className="container mt-5">
+    <div className="container py-5">
       {/* Product Modal */}
       <ProductDetailModal
         ref={productModalRef}
@@ -218,7 +218,7 @@ function App() {
       </button>
 
       {/* 表單資料 */}
-      <div className="my-5 row justify-content-center">
+      <div className="mt-5 row justify-content-center">
         <form onSubmit={handleSubmit(onSubmit)} className="col-md-6">
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
