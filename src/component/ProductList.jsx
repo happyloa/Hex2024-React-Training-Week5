@@ -10,7 +10,7 @@ function ProductList({
   loadingCartId,
 }) {
   return (
-    <div className="table-responsive">
+    <div className="table-responsive text-nowrap">
       <table className="table table-striped align-middle">
         <thead className="table-dark">
           <tr>
