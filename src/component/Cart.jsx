@@ -146,24 +146,20 @@ const Cart = forwardRef(
 // 設定 displayName
 Cart.displayName = "Cart";
 
+// 修改 PropTypes，直接接受陣列
 Cart.propTypes = {
-  cart: PropTypes.shape({
-    carts: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-          .isRequired,
-        product: PropTypes.shape({
-          title: PropTypes.string.isRequired,
-          unit: PropTypes.string.isRequired,
-        }).isRequired,
-        qty: PropTypes.number.isRequired,
-        total: PropTypes.number.isRequired,
-        final_total: PropTypes.number.isRequired,
-      })
-    ),
-    total: PropTypes.number,
-    final_total: PropTypes.number,
-  }),
+  cart: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      product: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        unit: PropTypes.string.isRequired,
+      }).isRequired,
+      qty: PropTypes.number.isRequired,
+      total: PropTypes.number.isRequired,
+      final_total: PropTypes.number.isRequired,
+    })
+  ).isRequired,
   deleteCart: PropTypes.func.isRequired,
   deleteCartAll: PropTypes.func.isRequired,
   updateCart: PropTypes.func.isRequired,
