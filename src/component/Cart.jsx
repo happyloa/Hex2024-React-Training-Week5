@@ -145,7 +145,7 @@ const Cart = forwardRef(
               {/* 清空購物車按鈕 */}
               <div className="text-end mt-3">
                 <button
-                  className="btn btn-outline-danger"
+                  className="btn btn-danger"
                   type="button"
                   onClick={deleteCartAll} // 呼叫清空購物車的函式
                 >

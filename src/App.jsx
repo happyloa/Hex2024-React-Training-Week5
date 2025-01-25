@@ -251,7 +251,7 @@ function App() {
 
       {/* 懸浮購物車按鈕 */}
       <button
-        className="btn btn-primary rounded-circle position-fixed shadow"
+        className="btn btn-success rounded-circle position-fixed shadow"
         style={{
           bottom: "40px",
           right: "40px",

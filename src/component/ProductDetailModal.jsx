@@ -114,7 +114,7 @@ const ProductDetailModal = forwardRef(
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-success"
                 onClick={() => addCart(product.id, cartQuantity)} // 加入購物車的操作
               >
                 加入購物車

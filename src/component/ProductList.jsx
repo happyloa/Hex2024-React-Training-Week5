@@ -90,7 +90,7 @@ function ProductList({
                   {/* 加入購物車按鈕 */}
                   <button
                     type="button"
-                    className="btn btn-outline-danger"
+                    className="btn btn-success"
                     onClick={() => addCart(product.id, 1)} // 點擊時將產品加入購物車
                     disabled={loadingCartId === product.id}>
                     {" "}
@@ -98,7 +98,7 @@ function ProductList({
                     {loadingCartId === product.id ? (
                       <ReactLoading
                         type="spin" // 加載效果的類型
-                        color="#dc3545" // 顏色
+                        color="#ffffff" // 顏色
                         height={20} // 高度
                         width={20} // 寬度
                       />
