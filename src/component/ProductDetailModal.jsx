@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const ProductDetailModal = forwardRef(
   ({ product, cartQuantity, setCartQuantity, addCart }, ref) => {
     return (
-      <div className="modal" id="productModal" ref={ref}>
+      <div className="modal" id="productModal" aria-hidden="true" ref={ref}>
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
