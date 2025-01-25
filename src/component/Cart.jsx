@@ -5,45 +5,57 @@ import * as bootstrap from "bootstrap";
 import { currency } from "../utils/filter";
 
 const Cart = forwardRef(
+  /**
+   * Cart 元件：用於顯示購物車內容，並提供操作功能如刪除商品、更新數量及清空購物車。
+   *
+   * @param {Array} cart - 購物車內容的陣列，包含產品資訊和數量。
+   * @param {Function} deleteCart - 刪除購物車中單一商品的函式。
+   * @param {Function} deleteCartAll - 清空購物車的函式。
+   * @param {Function} updateCart - 更新購物車中商品數量的函式。
+   * @param {React.Ref} ref - 用於控制 Offcanvas 的顯示和隱藏。
+   */
   ({ cart, deleteCart, deleteCartAll, updateCart }, ref) => {
     const offcanvasInstanceRef = useRef(null); // 存放 Bootstrap Offcanvas 實例
     const offcanvasElementRef = useRef(null); // 存放 DOM 元素參考
 
-    // 初始化 Offcanvas
+    // 初始化 Offcanvas，並提供 ref 方法供父元件呼叫
     useImperativeHandle(ref, () => ({
       show: () => {
         if (offcanvasInstanceRef.current) {
-          offcanvasInstanceRef.current.show();
+          offcanvasInstanceRef.current.show(); // 顯示 Offcanvas
         }
       },
       hide: () => {
         if (offcanvasInstanceRef.current) {
-          offcanvasInstanceRef.current.hide();
+          offcanvasInstanceRef.current.hide(); // 隱藏 Offcanvas
         }
       },
     }));
 
+    // 在元件掛載時初始化 Offcanvas，並在元件卸載時清理資源
     useEffect(() => {
       if (offcanvasElementRef.current) {
         offcanvasInstanceRef.current = new bootstrap.Offcanvas(
           offcanvasElementRef.current,
-          { backdrop: true }
+          { backdrop: true } // 背景點擊可關閉
         );
       }
       return () => {
         if (offcanvasInstanceRef.current) {
-          offcanvasInstanceRef.current.dispose();
+          offcanvasInstanceRef.current.dispose(); // 銷毀 Offcanvas 實例
         }
       };
     }, []);
 
     return (
       <div
-        className="offcanvas offcanvas-end text-nowrap"
+        className="offcanvas offcanvas-end text-nowrap" // Offcanvas 位置設置為右側
         tabIndex="-1"
         id="cartOffcanvas"
         aria-labelledby="cartOffcanvasLabel"
-        ref={offcanvasElementRef}>
+        ref={offcanvasElementRef} // 將 DOM 元素與 ref 綁定
+      >
+        {/* Offcanvas 標頭 */}
         <div className="offcanvas-header bg-light">
           <h5 className="offcanvas-title" id="cartOffcanvasLabel">
             購物車
@@ -52,10 +64,13 @@ const Cart = forwardRef(
             type="button"
             className="btn-close"
             aria-label="Close"
-            onClick={() => offcanvasInstanceRef.current?.hide()}></button>
+            onClick={() => offcanvasInstanceRef.current?.hide()} // 關閉 Offcanvas
+          ></button>
         </div>
+
+        {/* Offcanvas 主體內容 */}
         <div className="offcanvas-body">
-          {cart?.carts?.length > 0 ? (
+          {cart?.carts?.length > 0 ? ( // 如果購物車中有商品
             <>
               <table className="table table-hover align-middle">
                 <thead className="table-secondary">
@@ -70,36 +85,40 @@ const Cart = forwardRef(
                   {cart.carts.map((item) => (
                     <tr key={item.id}>
                       <td>
+                        {/* 刪除商品按鈕 */}
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-danger"
-                          onClick={() => deleteCart(item.id)}>
+                          onClick={() => deleteCart(item.id)} // 呼叫刪除單一商品的函式
+                        >
                           <i className="bi bi-x" /> 刪除
                         </button>
                       </td>
                       <td>{item.product.title}</td>
                       <td>
+                        {/* 數量更新輸入框 */}
                         <div className="input-group input-group-sm">
                           <input
                             type="number"
                             className="form-control"
                             min="1"
-                            defaultValue={item.qty}
-                            key={item.qty}
-                            onChange={(e) =>
-                              updateCart(item.id, Number(e.target.value))
+                            defaultValue={item.qty} // 預設數量
+                            key={item.qty} // 讓 React 重新渲染此元素
+                            onChange={
+                              (e) => updateCart(item.id, Number(e.target.value)) // 更新商品數量
                             }
                           />
                           <span className="input-group-text">
-                            {item.product.unit}
+                            {item.product.unit} {/* 單位 */}
                           </span>
                         </div>
                       </td>
                       <td className="text-end">
+                        {/* 顯示折扣價（如有） */}
                         {item.final_total !== item.total && (
                           <small className="text-success">折扣價：</small>
                         )}
-                        {currency(item.final_total)}
+                        {currency(item.final_total)} {/* 單價 */}
                       </td>
                     </tr>
                   ))}
@@ -123,17 +142,20 @@ const Cart = forwardRef(
                   ) : null}
                 </tfoot>
               </table>
+              {/* 清空購物車按鈕 */}
               <div className="text-end mt-3">
                 <button
                   className="btn btn-outline-danger"
                   type="button"
-                  onClick={deleteCartAll}>
+                  onClick={deleteCartAll} // 呼叫清空購物車的函式
+                >
                   清空購物車
                 </button>
               </div>
             </>
           ) : (
             <div className="text-center mt-5">
+              {/* 當購物車為空時顯示訊息 */}
               <p className="text-muted">您的購物車是空的。</p>
             </div>
           )}
@@ -160,9 +182,9 @@ Cart.propTypes = {
       final_total: PropTypes.number.isRequired,
     })
   ).isRequired,
-  deleteCart: PropTypes.func.isRequired,
-  deleteCartAll: PropTypes.func.isRequired,
-  updateCart: PropTypes.func.isRequired,
+  deleteCart: PropTypes.func.isRequired, // 刪除單一商品的函式
+  deleteCartAll: PropTypes.func.isRequired, // 清空購物車的函式
+  updateCart: PropTypes.func.isRequired, // 更新商品數量的函式
 };
 
 export default Cart;
