@@ -6,10 +6,10 @@ import { useForm } from "react-hook-form";
 
 import "../src/assets/style.css";
 
-import { currency } from "../src/utils/filter";
 import Pagination from "./component/Pagination";
 import ProductDetailModal from "./component/ProductDetailModal";
 import ProductList from "./component/ProductList";
+import Cart from "./component/Cart";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -80,6 +80,8 @@ function App() {
       const url = `${API_BASE}/api/${API_PATH}/cart`;
       await axios.post(url, { data });
       getCart();
+      // 自動打開購物車 Offcanvas
+      document.querySelector("#cartOffcanvas").classList.add("show");
     } catch (error) {
       console.log(error.response.data);
     } finally {
@@ -187,82 +189,13 @@ function App() {
       {/* 分頁 */}
       <Pagination pagination={pagination} changePage={changePage} />
 
-      {/* 購物車列表 */}
-      <div className="text-end">
-        <button
-          className="btn btn-outline-danger"
-          type="button"
-          onClick={deleteCartAll}>
-          清空購物車
-        </button>
-      </div>
-      <table className="table align-middle">
-        <thead>
-          <tr>
-            <th></th>
-            <th>品名</th>
-            <th>數量/單位</th>
-            <th>單價</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cart?.carts &&
-            cart?.carts.map((item) => (
-              <tr key={item.id}>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm"
-                    onClick={() => deleteCart(item.id)}>
-                    <i className="bi bi-x" /> 刪除
-                  </button>
-                </td>
-                <td>{item.product.title}</td>
-                <td>
-                  <div className="input-group input-group-sm">
-                    <input
-                      type="number"
-                      className="form-control"
-                      min="1"
-                      defaultValue={item.qty}
-                      key={item.qty}
-                      onChange={(e) =>
-                        updateCart(item.id, Number(e.target.value))
-                      }
-                    />
-                    <div className="input-group-text">/{item.product.unit}</div>
-                  </div>
-                </td>
-                <td className="text-end">
-                  {item.final_total !== item.total && (
-                    <small className="text-success">折扣價：</small>
-                  )}
-                  {currency(item.final_total)}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan="3" className="text-end">
-              總計
-            </td>
-            <td className="text-end">{currency(cart?.total)}</td>
-          </tr>
-          {cart?.final_total !== cart?.total ? (
-            <tr>
-              <td colSpan="3" className="text-end text-success">
-                折扣價
-              </td>
-              <td className="text-end text-success">
-                {currency(cart?.final_total)}
-              </td>
-            </tr>
-          ) : (
-            ""
-          )}
-        </tfoot>
-      </table>
+      {/* 購物車 Offcanvas */}
+      <Cart
+        cart={cart}
+        deleteCart={deleteCart}
+        deleteCartAll={deleteCartAll}
+        updateCart={updateCart}
+      />
 
       {/* 表單資料 */}
       <div className="my-5 row justify-content-center">
