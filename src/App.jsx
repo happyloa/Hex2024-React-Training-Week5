@@ -23,6 +23,7 @@ function App() {
   const [cart, setCart] = useState([]);
   const [cartQuantity, setCartQuantity] = useState(1);
   const productModalRef = useRef(null);
+  const cartOffcanvasRef = useRef(null);
 
   const {
     register,
@@ -80,8 +81,6 @@ function App() {
       const url = `${API_BASE}/api/${API_PATH}/cart`;
       await axios.post(url, { data });
       getCart();
-      // 自動打開購物車 Offcanvas
-      document.querySelector("#cartOffcanvas").classList.add("show");
     } catch (error) {
       console.log(error.response.data);
     } finally {
@@ -151,6 +150,10 @@ function App() {
     getProduct(id);
   };
 
+  const openCart = () => {
+    cartOffcanvasRef.current.show();
+  };
+
   const changePage = (page) => {
     getProducts(page);
   };
@@ -160,9 +163,12 @@ function App() {
     getProducts();
     getCart();
 
-    // 初始化 Bootstrap Modal
+    // 初始化 Bootstrap Modal 和 Offcanvas
     productModalRef.current = new bootstrap.Modal("#productModal", {
       keyboard: false,
+    });
+    cartOffcanvasRef.current = new bootstrap.Offcanvas("#cartOffcanvas", {
+      backdrop: true,
     });
   }, []);
 
@@ -191,11 +197,25 @@ function App() {
 
       {/* 購物車 Offcanvas */}
       <Cart
+        ref={cartOffcanvasRef}
         cart={cart}
         deleteCart={deleteCart}
         deleteCartAll={deleteCartAll}
         updateCart={updateCart}
       />
+
+      {/* 懸浮購物車按鈕 */}
+      <button
+        className="btn btn-primary rounded-circle position-fixed"
+        style={{
+          bottom: "50px",
+          right: "100px",
+          width: "60px",
+          height: "60px",
+        }}
+        onClick={openCart}>
+        <i className="fa fa-shopping-cart"></i>
+      </button>
 
       {/* 表單資料 */}
       <div className="my-5 row justify-content-center">
