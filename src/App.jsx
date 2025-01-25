@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import ReactLoading from "react-loading";
 import axios from "axios";
 import * as bootstrap from "bootstrap";
 import validate from "validate.js";
@@ -10,6 +9,7 @@ import "../src/assets/style.css";
 import { currency } from "../src/utils/filter";
 import Pagination from "./component/Pagination";
 import ProductDetailModal from "./component/ProductDetailModal";
+import ProductList from "./component/ProductList";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -114,7 +114,6 @@ function App() {
   const updateCart = async (id, qty = 1) => {
     try {
       const url = `${API_BASE}/api/${API_PATH}/cart/${id}`;
-
       const data = {
         product_id: id,
         qty,
@@ -177,74 +176,13 @@ function App() {
       />
 
       {/* 產品列表 */}
-      <table className="table align-middle">
-        <thead>
-          <tr>
-            <th>圖片</th>
-            <th>產品名稱</th>
-            <th>價錢</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td style={{ width: "200px" }}>
-                <div
-                  style={{
-                    height: "100px",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundImage: `url(${product.imageUrl})`,
-                  }}
-                />
-              </td>
-              <td>{product.title}</td>
-              <td>
-                <del className="h6">
-                  原價： {currency(product.origin_price)} 元
-                </del>
-                <div className="h5">特價： {currency(product.price)} 元</div>
-              </td>
-              <td>
-                <div className="btn-group btn-group-sm">
-                  <button
-                    className="btn btn-outline-secondary"
-                    onClick={() => openModal(product.id)}
-                    disabled={loadingProductId === product.id}>
-                    {loadingProductId === product.id ? (
-                      <ReactLoading
-                        type="spin"
-                        color="#6c757d"
-                        height={20}
-                        width={20}
-                      />
-                    ) : (
-                      "查看更多"
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger"
-                    onClick={() => addCart(product.id, 1)}
-                    disabled={loadingCartId === product.id}>
-                    {loadingCartId === product.id ? (
-                      <ReactLoading
-                        type="spin"
-                        color="#dc3545"
-                        height={20}
-                        width={20}
-                      />
-                    ) : (
-                      "加入購物車"
-                    )}
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <ProductList
+        products={products}
+        openModal={openModal}
+        addCart={addCart}
+        loadingProductId={loadingProductId}
+        loadingCartId={loadingCartId}
+      />
 
       {/* 分頁 */}
       <Pagination pagination={pagination} changePage={changePage} />
